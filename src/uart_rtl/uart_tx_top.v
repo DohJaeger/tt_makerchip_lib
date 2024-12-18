@@ -15,8 +15,8 @@ module uart_tx_top
     
     parameter CLKS_PER_BIT = FREQUENCY/(16*BAUD_RATE);
 
-    uart_tx #(CLKS_PER_BIT = CLKS_PER_BIT)
-            uart_tx (.i_clock(clk),
+    uart_tx #(.CLKS_PER_BIT(CLKS_PER_BIT))
+            uart_tx_inst (.i_clock(clk),
                      .i_rst(reset), 
                      .i_Tx_DV(tx_dv), 
                      .i_Tx_Byte(tx_byte),

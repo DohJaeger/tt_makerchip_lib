@@ -11,7 +11,7 @@ module uart_rx_top#(parameter FREQUENCY, parameter BAUD_RATE)(
     
     parameter CLKS_PER_BIT = (FREQUENCY/(16*BAUD_RATE));
     
-    uart_rx#(CLKS_PER_BIT = CLKS_PER_BIT) uart_rx_inst(
+    uart_rx #(.CLKS_PER_BIT(CLKS_PER_BIT)) uart_rx_inst(
         .i_Clock(clk),
         .reset(reset),
         .i_Rx_Serial(rx_serial),
