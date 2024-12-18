@@ -1,4 +1,5 @@
 // Taken reference from: https://nandland.com/uart-serial-port-module/
+
 module uart_tx_top
   #(parameter FREQUENCY,
     parameter BAUD_RATE)
