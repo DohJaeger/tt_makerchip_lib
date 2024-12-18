@@ -26,6 +26,7 @@ module uart_tx
   reg          r_Tx_Done     = 0;
   reg          r_Tx_Active   = 0;
 
+
   parameter CLKS_PER_BIT = FREQUENCY/(16*BAUD_RATE);
 
   always@(posedge i_clock) begin
