@@ -11,8 +11,11 @@ module uart_tx_top
     output tx_serial,
     output tx_done
     )
+    
+    parameter CLKS_PER_BIT = FREQUENCY/(16*BAUD_RATE);
 
-    uart_tx uart_tx( .i_clock(clk),
+    uart_tx #(CLKS_PER_BIT = CLKS_PER_BIT)
+            uart_tx ( .i_clock(clk),
                      .i_rst(reset), 
                      .i_Tx_DV(tx_dv), 
                      .i_Tx_Byte(tx_byte),
@@ -25,8 +28,7 @@ endmodule
 
 
 module uart_tx 
-  #(parameter FREQUENCY,
-    parameter BAUD_RATE)
+  #(parameter CLKS_PER_BIT)
   (
    input       i_Clock,
    input       i_rst,
@@ -49,9 +51,6 @@ module uart_tx
   reg [7:0]    r_Tx_Data     = 0;
   reg          r_Tx_Done     = 0;
   reg          r_Tx_Active   = 0;
-
-
-  parameter CLKS_PER_BIT = FREQUENCY/(16*BAUD_RATE);
 
   always@(posedge i_clock) begin
     if(i_rst) begin
