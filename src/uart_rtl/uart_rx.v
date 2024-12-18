@@ -5,7 +5,7 @@ module uart_rx_top#(parameter FREQUENCY, parameter BAUD_RATE)(
     input clk,
     input reset,
     input i_rx_serial,
-    output received,
+    output rx_done,
     output [7:0] rx_byte
     );
     
@@ -15,7 +15,7 @@ module uart_rx_top#(parameter FREQUENCY, parameter BAUD_RATE)(
         .i_Clock(clk),
         .reset(reset),
         .i_Rx_Serial(i_rx_serial),
-        .o_Rx_DV(received),
+        .o_Rx_DV(rx_done),
         .o_Rx_Byte(rx_byte)
 )
 
