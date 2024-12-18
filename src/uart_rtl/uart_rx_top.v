@@ -17,7 +17,7 @@ module uart_rx_top#(parameter FREQUENCY, parameter BAUD_RATE)(
         .i_Rx_Serial(rx_serial),
         .o_Rx_DV(rx_done),
         .o_Rx_Byte(rx_byte)
-)
+);
 
 endmodule  
 

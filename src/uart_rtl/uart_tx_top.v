@@ -11,7 +11,7 @@ module uart_tx_top
     output tx_active,
     output tx_serial,
     output tx_done
-    )
+    );
     
     parameter CLKS_PER_BIT = FREQUENCY/(16*BAUD_RATE);
 
