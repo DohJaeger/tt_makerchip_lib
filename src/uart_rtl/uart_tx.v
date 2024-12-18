@@ -1,43 +1,15 @@
 // Taken reference from: https://nandland.com/uart-serial-port-module/
 
-module uart_tx_top
-  #(parameter FREQUENCY,
-    parameter BAUD_RATE)
-    (
-    input clk,
-    input reset,
-    input tx_dv,
-    input [7:0] tx_byte,
-    output tx_active,
-    output tx_serial,
-    output tx_done
-    );
-    
-    parameter CLKS_PER_BIT = FREQUENCY/(16*BAUD_RATE);
-
-    uart_tx #(.CLKS_PER_BIT(CLKS_PER_BIT))
-            uart_tx_inst (.i_clock(clk),
-                     .i_rst(reset), 
-                     .i_Tx_DV(tx_dv), 
-                     .i_Tx_Byte(tx_byte),
-                     .o_Tx_Active(tx_active),
-                     .o_Tx_Serial(tx_serial),
-                     .o_Tx_Done(tx_done)
-                     );
-
-endmodule
-
-
 module uart_tx 
-  #(parameter CLKS_PER_BIT)
+  #(parameter FREQUENCY, parameter BAUD_RATE)
   (
-   input       i_Clock,
-   input       i_rst,
-   input       i_Tx_DV,
-   input [7:0] i_Tx_Byte, 
-   output      o_Tx_Active,
-   output reg  o_Tx_Serial,
-   output      o_Tx_Done
+   input       clk,
+   input       reset,
+   input       tx_dv,
+   input [7:0] tx_byte, 
+   output      tx_active,
+   output reg  tx_serial,
+   output      tx_done
    );
   
   parameter s_IDLE         = 3'b000;
@@ -45,6 +17,8 @@ module uart_tx
   parameter s_TX_DATA_BITS = 3'b010;
   parameter s_TX_STOP_BIT  = 3'b011;
   parameter s_CLEANUP      = 3'b100;
+
+  parameter CLKS_PER_BIT = FREQUENCY/(16*BAUD_RATE);
    
   reg [2:0]    r_SM_Main     = 0;
   reg [7:0]    r_Clock_Count = 0;
@@ -53,25 +27,25 @@ module uart_tx
   reg          r_Tx_Done     = 0;
   reg          r_Tx_Active   = 0;
 
-  always@(posedge i_clock) begin
-    if(i_rst) begin
+  always@(posedge clk) begin
+    if(reset) begin
         r_SM_Main <= s_IDLE;
     end
   end
      
-  always @(posedge i_Clock) begin
+  always @(posedge clk) begin
        
       case (r_SM_Main)
         s_IDLE :
           begin
-            o_Tx_Serial   <= 1'b1;         // Drive Line High for Idle
+            tx_serial   <= 1'b1;         // Drive Line High for Idle
             r_Tx_Done     <= 1'b0;
             r_Clock_Count <= 0;
             r_Bit_Index   <= 0;
              
-            if (i_Tx_DV == 1'b1) begin
+            if (tx_dv == 1'b1) begin
                 r_Tx_Active <= 1'b1;
-                r_Tx_Data   <= i_Tx_Byte;
+                r_Tx_Data   <= tx_byte;
                 r_SM_Main   <= s_TX_START_BIT;
             end
             else
@@ -82,7 +56,7 @@ module uart_tx
         // Send out Start Bit. Start bit = 0
         s_TX_START_BIT :
           begin
-            o_Tx_Serial <= 1'b0;
+            tx_serial <= 1'b0;
              
             // Wait CLKS_PER_BIT-1 clock cycles for start bit to finish
             if (r_Clock_Count < CLKS_PER_BIT-1) begin
@@ -99,7 +73,7 @@ module uart_tx
         // Wait CLKS_PER_BIT-1 clock cycles for data bits to finish         
         s_TX_DATA_BITS :
           begin
-            o_Tx_Serial <= r_Tx_Data[r_Bit_Index];
+            tx_serial <= r_Tx_Data[r_Bit_Index];
              
             if (r_Clock_Count < CLKS_PER_BIT-1) begin
                 r_Clock_Count <= r_Clock_Count + 1;
@@ -126,7 +100,7 @@ module uart_tx
         // Send out Stop bit.  Stop bit = 1
         s_TX_STOP_BIT :
           begin
-            o_Tx_Serial <= 1'b1;
+            tx_serial <= 1'b1;
              
             // Wait CLKS_PER_BIT-1 clock cycles for Stop bit to finish
             if (r_Clock_Count < CLKS_PER_BIT-1) begin
@@ -156,7 +130,7 @@ module uart_tx
       endcase
     end
  
-  assign o_Tx_Active = r_Tx_Active;
-  assign o_Tx_Done   = r_Tx_Done;
+  assign tx_active = r_Tx_Active;
+  assign tx_done   = r_Tx_Done;
    
 endmodule
