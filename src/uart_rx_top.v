@@ -9,5 +9,5 @@ module uart_rx(
     );
     
     baudrate_generator f0(clk,reset,sample_tick);
-    Rx f1(Rx,clk,reset,sample_tick,RxD,rx_done);
+    rx f1(Rx,clk,reset,sample_tick,RxD,rx_done);
 endmodule
