@@ -1,4 +1,28 @@
 // Taken reference from: https://nandland.com/uart-serial-port-module/
+module uart_tx_top
+  #(parameter FREQUENCY,
+    parameter BAUD_RATE)
+    (
+    input clk,
+    input reset,
+    input tx_dv,
+    input [7:0] tx_byte,
+    output tx_active,
+    output tx_serial,
+    output tx_done
+    )
+
+    uart_tx uart_tx( .i_clock(clk),
+                     .i_rst(reset), 
+                     .i_Tx_DV(tx_dv), 
+                     .i_Tx_Byte(tx_byte),
+                     .o_Tx_Active(tx_active),
+                     .o_Tx_Serial(tx_serial),
+                     .o_Tx_Done(tx_done)
+                     );
+
+endmodule
+
 
 module uart_tx 
   #(parameter FREQUENCY,
