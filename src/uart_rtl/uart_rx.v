@@ -1,7 +1,7 @@
 //Taken reference from https://nandland.com/uart-serial-port-module/
 // UART Receiver
 module uart_rx 
-  #(parameter FREQUENCY, parameter BAUD_RATE)
+  #(parameter FREQUENCY = 10000000, parameter BAUD_RATE = 9600)
   (
    input        clk,
    input        rx_serial,
