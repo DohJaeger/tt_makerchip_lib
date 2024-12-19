@@ -1,3 +1,5 @@
+//Taken reference from https://nandland.com/uart-serial-port-module/
+// UART Transmitter
 module uart_tx 
     #(parameter int FREQUENCY = 10000000, parameter int BAUD_RATE = 9600)
     (
