@@ -17,6 +17,14 @@ This repository contains implementations of a UART Controller in TL-Verilog and 
 
 ---
 
+## UART PMOD interfacing with the board
+![image](https://github.com/user-attachments/assets/bc3a497b-3d3b-4e47-b657-20b18083b830)
+
+- The peripheral (FPGA) receives data from the host (PC) via the TxD port of the USB-UART PMOD.
+- The peripheral sends data to the host through the RxD port of the USB-UART PMOD.
+
+---
+
 ## PuTTY Configuration
 
 To interact with the UART Controller using a serial terminal, follow these steps to configure PuTTY:
