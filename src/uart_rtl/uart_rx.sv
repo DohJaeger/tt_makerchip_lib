@@ -6,7 +6,7 @@ module uart_rx
         input logic clk,
         input logic rx_serial,          // input serial data
         input logic reset,
-        //output logic rx_done,           // asserts when reception is done  // uncomment if rx_done signal needed in the I/O
+        output logic rx_done,           // asserts when reception is done
         output logic [7:0] rx_byte      // received byte
     );
 
@@ -106,6 +106,6 @@ module uart_rx
         end
     end
 
-    //assign rx_done = r_Rx_DV;     // uncomment if rx_done required in the I/O
+    assign rx_done = r_Rx_DV;
     assign rx_byte = r_Rx_Byte;
 endmodule

@@ -5,14 +5,13 @@ module uart_tx
     (
         input logic clk,
         input logic reset,
-        //input logic tx_dv,      // uncomment and comment the tx_dv assertion below to have external enable
+        input logic tx_dv,
         input logic [7:0] tx_byte, 
-        //output logic tx_active,   // uncomment if tx_active needed
+        output logic tx_active,
         output logic tx_serial,
-        //output logic tx_done      // uncomment if tx_done needed
+        output logic tx_done
     );
 
-    assign tx_dv = 1'b1;      // uncomment to remove tx_dv from I/O.
     typedef enum logic [2:0] {
         s_IDLE          = 3'b000,
         s_TX_START_BIT  = 3'b001,
@@ -103,7 +102,7 @@ module uart_tx
         end
     end
 
-    //assign tx_active = r_Tx_Active;   // uncomment if tx_active needed in the I/O
-    //assign tx_done = r_Tx_Done;     // uncomment if tx_done needed in the I/O
+    assign tx_active = r_Tx_Active;
+    assign tx_done = r_Tx_Done;
 
 endmodule
